@@ -1,31 +1,43 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "../assets/css/cart.css";
-import { useCart } from "../components/CartProvider"; // Import useCart
+import { useDispatch, useSelector } from "react-redux";
+import {
+  removeFromCart,
+  updateQuantity,
+  selectCartItems,
+  clearCart,
+} from "../redux/cartSlice";
+import axios from "axios";
 
 const Cart = () => {
-  const { cart, removeFromCart, updateQuantity } = useCart(); // Get cart data and functions
+  const dispatch = useDispatch();
+  const cart = useSelector(selectCartItems);
+  const navigate = useNavigate();
 
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [orderConfirmation, setOrderConfirmation] = useState(null);
+  const [checkoutError, setCheckoutError] = useState(null);
 
   const handleRemoveItem = (itemId) => {
-    removeFromCart(itemId);
+    dispatch(removeFromCart(itemId));
   };
 
   const handleQuantityChange = (itemId, newQuantity) => {
-    updateQuantity(itemId, newQuantity);
+    dispatch(updateQuantity({ itemId, quantity: newQuantity }));
   };
 
   const incrementQuantity = (itemId) => {
-    const item = cart.find(item => item.id === itemId);
-    updateQuantity(itemId, item.quantity + 1);
+    const item = cart.find((item) => item.id === itemId);
+    dispatch(updateQuantity({ itemId, quantity: item.quantity + 1 }));
   };
 
   const decrementQuantity = (itemId) => {
-    const item = cart.find(item => item.id === itemId);
-    if (item && item.quantity > 1) { // Prevent going below 1
-        updateQuantity(itemId, item.quantity - 1);
+    const item = cart.find((item) => item.id === itemId);
+    if (item && item.quantity > 1) {
+      dispatch(updateQuantity({ itemId, quantity: item.quantity - 1 }));
     } else if (item && item.quantity === 1) {
-      removeFromCart(itemId)
+      dispatch(removeFromCart(itemId));
     }
   };
 
@@ -33,8 +45,86 @@ const Cart = () => {
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-  const shipping = 45; // Fixed shipping cost
+  const shipping = 45;
   const total = subtotal + shipping;
+
+  const handleCheckout = async () => {
+    setIsCheckingOut(true);
+    setCheckoutError(null);
+
+    const orderData = {
+      items: cart.map((item) => ({
+        itemId: item.id,
+        name: item.name,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+      subtotal: subtotal,
+      shipping: shipping,
+      total: total,
+      paymentMethod: "cashOnDelivery",
+    };
+
+    try {
+      //const response = await axios.post("/api/orders", orderData);
+
+      const response = {
+        data: {
+          orderId: Math.floor(Math.random() * 1000000), //Mock
+          message: "Order placed successfully",
+        },
+        status: 201,
+      };
+
+      if (response.status === 201) {
+        setOrderConfirmation({
+          orderId: response.data.orderId,
+          totalAmount: total.toFixed(2),
+        });
+        dispatch(clearCart());
+      } else {
+        setCheckoutError("An unexpected error occurred. Please try again.");
+        console.error("Checkout failed:", response);
+      }
+    } catch (error) {
+      setCheckoutError(
+        "Could not connect to the server. Please check your internet connection and try again."
+      );
+      console.error("Error placing order:", error);
+    } finally {
+      setIsCheckingOut(false);
+    }
+  };
+
+  if (orderConfirmation) {
+    return (
+      <div className="cart-section mt-150 mb-150">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-12">
+              <div className="alert alert-success" role="alert">
+                <h4>Thank you for your order!</h4>
+                <p>
+                  Your order has been placed successfully. Please pay $
+                  {orderConfirmation.totalAmount} upon delivery.
+                </p>
+                <p>Order ID: {orderConfirmation.orderId}</p>
+                <button
+                  onClick={() => {
+                    setOrderConfirmation(null);
+                    navigate("/user/menu");
+                  }}
+                  className="boxed-btn"
+                >
+                  Back to Menu
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="cart-section mt-150 mb-150">
@@ -129,9 +219,22 @@ const Cart = () => {
                 </tbody>
               </table>
               <div className="cart-buttons">
-                <Link to="/checkout" className="boxed-btn checkout-btn">
-                  Check Out
-                </Link>
+                {checkoutError && (
+                  <div className="alert alert-danger" role="alert">
+                    {checkoutError}
+                  </div>
+                )}
+
+                {isCheckingOut ? (
+                  <div>Processing Order...</div>
+                ) : (
+                  <button
+                    onClick={handleCheckout}
+                    className="boxed-btn checkout-btn"
+                  >
+                    Checkout - Cash on Delivery
+                  </button>
+                )}
               </div>
             </div>
           </div>

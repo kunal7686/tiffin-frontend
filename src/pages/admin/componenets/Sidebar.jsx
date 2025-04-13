@@ -4,7 +4,6 @@ import { Link, useLocation } from "react-router-dom";
 function Sidebar() {
   const location = useLocation();
 
-  // Function to determine if a menu item is active
   const isActive = (path) => {
     return location.pathname === path;
   };
@@ -12,13 +11,17 @@ function Sidebar() {
   return (
     <nav className="sidebar sidebar-offcanvas" id="sidebar">
       <div className="sidebar-brand-wrapper d-flex align-items-center justify-content-center fixed-top">
-                     <Link className="sidebar-brand brand-logo" to="/">
-                         <span className="sidebar-logo-text" style={{color:"whitesmoke"}}>TiffinBox</span>  {/* Dummy Logo Text */}
-                     </Link>
-                     <Link className="sidebar-brand brand-logo-mini" to="/">
-                         <span className="sidebar-logo-text-mini">TB</span>  {/* Dummy Logo Text Mini */}
-                     </Link>
-                 </div>
+        <Link className="sidebar-brand brand-logo" to="/">
+          <span className="sidebar-logo-text" style={{ color: "whitesmoke" }}>
+            TiffinBox
+          </span>{" "}
+          {/* Dummy Logo Text */}
+        </Link>
+        <Link className="sidebar-brand brand-logo-mini" to="/">
+          <span className="sidebar-logo-text-mini">TB</span>{" "}
+          {/* Dummy Logo Text Mini */}
+        </Link>
+      </div>
       <ul className="nav">
         <li
           className={`nav-item menu-items ${

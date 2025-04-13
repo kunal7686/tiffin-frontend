@@ -16,7 +16,7 @@ const NotFound = () => {
               <div
                 className="error-text"
                 style={{
-                  minWidth: "300px", // Adjust this value as needed
+                  minWidth: "300px",
                 }}
               >
                 <i className="far fa-sad-cry"></i>

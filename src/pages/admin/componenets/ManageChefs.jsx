@@ -16,7 +16,6 @@ function ManageChefs() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Chef Data:", chefData);
-    // Add your logic here to submit the chef data to your backend
   };
 
   return (

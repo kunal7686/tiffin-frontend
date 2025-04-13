@@ -4,7 +4,7 @@ import { NavLink, Link, useNavigate, useLocation } from "react-router-dom";
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();  // Get the current location
+  const location = useLocation();
 
   useEffect(() => {
     const storedLoginStatus = localStorage.getItem("isLoggedIn");
@@ -19,7 +19,6 @@ const Header = () => {
     navigate("/");
   };
 
-  // Check if the current path starts with "/user"
   const isUserRoute = location.pathname.startsWith("/user");
 
   return (
@@ -43,7 +42,7 @@ const Header = () => {
             <NavLink
               className="nav-link"
               to="/"
-              activeClassName="active"
+              activeClassName="active-link"
               style={({ isActive }) => ({
                 color: isActive ? "yellow" : "white",
               })}
@@ -55,7 +54,7 @@ const Header = () => {
             <NavLink
               className="nav-link"
               to="/about"
-              activeClassName="active"
+              activeClassName="active-link"
               style={({ isActive }) => ({
                 color: isActive ? "yellow" : "white",
               })}
@@ -67,7 +66,7 @@ const Header = () => {
             <NavLink
               className="nav-link"
               to="/contactus"
-              activeClassName="active"
+              activeClassName="active-link"
               style={({ isActive }) => ({
                 color: isActive ? "yellow" : "white",
               })}
@@ -94,32 +93,36 @@ const Header = () => {
 
           {/* Conditionally render Login/Logout button */}
           {isUserRoute ? (
-            // Show Logout on /user routes
             <li className="nav-item">
               <Link
-                to="/" // Redirect to home page after logout
+                to="/"
                 className="nav-link"
                 style={{
                   display: "flex",
                   alignItems: "center",
                   color: "white",
                 }}
-                onClick={handleLogoutClick} // Call logout handler
+                onClick={handleLogoutClick}
               >
-                <div className="preview-thumbnail" style={{ marginRight: "5px" }}>
+                <div
+                  className="preview-thumbnail"
+                  style={{ marginRight: "5px" }}
+                >
                   <div className="preview-icon bg-dark rounded-circle p-2">
                     <i className="mdi mdi-logout text-danger"></i>
                   </div>
                 </div>
                 <div className="preview-item-content">
-                  <p className="preview-subject mb-1" style={{ color: 'white' }}>
+                  <p
+                    className="preview-subject mb-1"
+                    style={{ color: "white" }}
+                  >
                     Logout
                   </p>
                 </div>
               </Link>
             </li>
           ) : (
-            // Show Login on other routes (if not logged in)
             !isLoggedIn && (
               <li className="nav-item">
                 <Link
@@ -131,13 +134,19 @@ const Header = () => {
                     color: "white",
                   }}
                 >
-                  <div className="preview-thumbnail" style={{ marginRight: "5px" }}>
+                  <div
+                    className="preview-thumbnail"
+                    style={{ marginRight: "5px" }}
+                  >
                     <div className="preview-icon bg-dark rounded-circle p-2">
                       <i className="mdi mdi-login text-success"></i>
                     </div>
                   </div>
                   <div className="preview-item-content">
-                    <p className="preview-subject mb-1" style={{ color: 'white' }}>
+                    <p
+                      className="preview-subject mb-1"
+                      style={{ color: "white" }}
+                    >
                       Login
                     </p>
                   </div>

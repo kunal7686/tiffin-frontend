@@ -16,7 +16,6 @@ function ManageUsers() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("User Data:", userData);
-    // Add your logic here to submit the user data to your backend
   };
 
   return (

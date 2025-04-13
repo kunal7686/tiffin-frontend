@@ -16,7 +16,6 @@ function ManageOrders() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Order Data:", orderData);
-    // Add your logic here to submit the order data to your backend
   };
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // If you are using React Router for navigation
+import { Link } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,22 +9,18 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!email || !password) {
       setError("Please enter both email and password.");
       return;
     }
 
-    // Email format validation (you can improve this)
     if (!email.includes("@")) {
       setError("Please enter a valid email address.");
       return;
     }
 
     try {
-      // Replace with your actual authentication logic (e.g., API call)
       const response = await fetch("/api/login", {
-        // Replace with your API endpoint
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -35,17 +31,13 @@ const Login = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Login successful
         console.log("Login successful:", data);
 
-        // Store token or user info (e.g., in localStorage)
-        localStorage.setItem("token", data.token); // Store token
-        //localStorage.setItem('user', JSON.stringify(data.user)); // Store user
+        localStorage.setItem("token", data.token);
+        //localStorage.setItem('user', JSON.stringify(data.user));
 
-        // Redirect to a protected route (e.g., dashboard)
-        window.location.href = "/dashboard"; // Replace with your route
+        window.location.href = "/dashboard";
       } else {
-        // Login failed
         setError(
           data.message || "Login failed. Please check your credentials."
         );
@@ -64,7 +56,12 @@ const Login = () => {
             <div className="col-lg-4 mx-auto">
               <div className="auth-form-light text-left py-5 px-4 px-sm-5">
                 <div className="text-center">
-                  <img src="/images/favicon.png" width={50} height={50} alt="logo" />
+                  <img
+                    src="/images/favicon.png"
+                    width={50}
+                    height={50}
+                    alt="logo"
+                  />
                 </div>
                 <form className="pt-3 mt-2" onSubmit={handleSubmit}>
                   <div className="form-group">

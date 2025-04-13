@@ -1,4 +1,3 @@
-// Footer.js
 import React from "react";
 
 function Footer() {
@@ -9,8 +8,7 @@ function Footer() {
           zensparkx@gmail.com
         </span>
         <span className="float-none float-sm-right d-block mt-1 mt-sm-0 text-center">
-          Free
-          from zensparkx@gmail.com
+          Free from zensparkx@gmail.com
         </span>
       </div>
     </footer>

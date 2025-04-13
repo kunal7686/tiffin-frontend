@@ -12,7 +12,7 @@ function Auth() {
   };
 
   const handleSubmit = async (e, formType) => {
-    e.preventDefault(); // stop form from reloading
+    e.preventDefault();
 
     const formData = new FormData(e.target);
     const data = {};
@@ -32,8 +32,12 @@ function Auth() {
           return;
         }
 
-        let  {name , email , password} = data 
-        const res = await httpPost("/admin/register", {name , email , password});
+        let { name, email, password } = data;
+        const res = await httpPost("/admin/register", {
+          name,
+          email,
+          password,
+        });
         console.log("Signup response:", res);
       }
 

@@ -16,7 +16,6 @@ function ManageDishes() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Dish Data:", dishData);
-    // Add your logic here to submit the dish data to your backend
   };
 
   return (
@@ -85,7 +84,11 @@ function ManageDishes() {
           />
         </div>
 
-        <button type="submit" className="btn btn-primary" style={{ maxWidth: "500px" }}>
+        <button
+          type="submit"
+          className="btn btn-primary"
+          style={{ maxWidth: "500px" }}
+        >
           Save Dish
         </button>
       </form>

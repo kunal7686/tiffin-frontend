@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom"; // If you are using React Router for navigation
+import { Link } from "react-router-dom";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -11,7 +11,6 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Basic validation
     if (!username || !email || !password || !confirmPassword) {
       setError("Please fill in all fields.");
       return;
@@ -27,16 +26,13 @@ const Register = () => {
       return;
     }
 
-    // Password strength validation (example)
     if (password.length < 6) {
       setError("Password must be at least 6 characters long.");
       return;
     }
 
     try {
-      // Replace with your actual registration logic (e.g., API call)
       const response = await fetch("/api/register", {
-        // Replace with your API endpoint
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -47,12 +43,10 @@ const Register = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Registration successful
         console.log("Registration successful:", data);
-        // Optionally, redirect to login page or display a success message
-        window.location.href = "/kitchen/login"; // Redirect to login
+
+        window.location.href = "/kitchen/login";
       } else {
-        // Registration failed
         setError(data.message || "Registration failed. Please try again.");
       }
     } catch (err) {
@@ -68,8 +62,13 @@ const Register = () => {
           <div className="row w-100 mx-0">
             <div className="col-lg-4 mx-auto">
               <div className="auth-form-light text-left py-5 px-4 px-sm-5">
-              <div className="text-center">
-                  <img src="/images/favicon.png" width={50} height={50} alt="logo" />
+                <div className="text-center">
+                  <img
+                    src="/images/favicon.png"
+                    width={50}
+                    height={50}
+                    alt="logo"
+                  />
                 </div>
                 <form className="pt-3 mt-2" onSubmit={handleSubmit}>
                   <div className="form-group">

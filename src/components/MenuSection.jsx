@@ -1,188 +1,139 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import { useCart } from "./CartProvider";
-import Modal from "react-modal";
 import "../assets/css/menu.css";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  setMenuItems,
+  setLoading,
+  setError,
+  selectAllMenuItems,
+  selectMenuLoadingStatus,
+  selectMenuError,
+  setFilter,
+  selectMenuFilter,
+} from "../redux/menuSlice";
+import { addToCart } from "../redux/cartSlice";
+
+const MenuItem = ({ item, handleItemClick }) => {
+  return (
+    <div
+      key={item.id}
+      className={`col-sm-6 col-lg-4 all ${item.category}`}
+      style={{ cursor: "pointer" }}
+    >
+      <div className="box">
+        <div>
+          <div className="img-box">
+            <img src={item.image} alt={item.name} />
+          </div>
+          <div className="detail-box">
+            <h5>{item.name}</h5>
+            <p>{item.description}</p>
+            <div className="options">
+              <h6>${item.price}</h6>
+            </div>
+            <button
+              className="add-to-cart-btn"
+              onClick={() => handleItemClick(item)}
+            >
+              View Details
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const FilterMenu = ({ filter, handleFilterClick }) => {
+  const filters = [
+    "All",
+    "Popular",
+    "Chefs",
+    "Regular",
+    "Veg",
+    "Non-Veg",
+    "Regional",
+  ];
+
+  return (
+    <ul className="filters_menu">
+      {filters.map((filterItem) => (
+        <li
+          key={filterItem}
+          className={filter === filterItem ? "active" : ""}
+          onClick={() => handleFilterClick(filterItem)}
+        >
+          {filterItem}
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 const Menu = () => {
-  const [filter, setFilter] = useState("*");
-  const [activeFilter, setActiveFilter] = useState("*");
-  const [visibleItems, setVisibleItems] = useState(6); // Track visible items
-  const gridRef = useRef(null);
+  const dispatch = useDispatch();
+  const menuItems = useSelector(selectAllMenuItems);
+  const loading = useSelector(selectMenuLoadingStatus);
+  const error = useSelector(selectMenuError);
+  const filter = useSelector(selectMenuFilter);
   const navigate = useNavigate();
-  const { addToCart } = useCart();
-
-  const [selectedItem, setSelectedItem] = useState(null);
-  const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [itemQuantity, setItemQuantity] = useState(1);
-
-  useEffect(() => {
-    setActiveFilter(filter);
-    setVisibleItems(6); // Reset visible items when filter changes
-  }, [filter]);
+  const gridRef = useRef(null);
 
   const handleFilterClick = (newFilter) => {
-    setFilter(newFilter);
+    dispatch(setFilter(newFilter));
   };
 
   const handleItemClick = (item) => {
-    setSelectedItem(item);
-    setItemQuantity(1);
-    setModalIsOpen(true);
+    navigate(`/user/menu/${item.id}`);
   };
-
-  const closeModal = () => {
-    setModalIsOpen(false);
-  };
-
-  const handleAddToCartFromModal = () => {
-    if (selectedItem) {
-      addToCart({ ...selectedItem, quantity: itemQuantity });
-      closeModal();
-      navigate("/user/cart");
-    }
-  };
-
-  const increaseQuantity = () => {
-    setItemQuantity(itemQuantity + 1);
-  };
-
-  const decreaseQuantity = () => {
-    if (itemQuantity > 1) {
-      setItemQuantity(itemQuantity - 1);
-    }
-  };
-
-  const handleViewMore = () => {
-    setVisibleItems(visibleItems + 6); // Show 6 more items
-  };
-
-  const menuItems = [
-    {
-      id: 1,
-      name: "Classic Tiffin",
-      description: "A balanced meal with roti, sabzi, dal, and rice.",
-      price: 8,
-      image: "/images/kitchen/boxes/first.jpg",
-      category: "daily",
-    },
-    {
-      id: 2,
-      name: "Executive Lunch",
-      description: "Premium meal with special sabzi, paneer dish, and dessert.",
-      price: 12,
-      image: "/images/kitchen/boxes/second.jpg",
-      category: "daily",
-    },
-    {
-      id: 3,
-      name: "Customizable Tiffin",
-      description: "Choose your favorite items from our menu each day.",
-      price: 10,
-      image: "/images/kitchen/boxes/third.jpg",
-      category: "custom",
-    },
-    {
-      id: 4,
-      name: "Vegetarian Special",
-      description: "A delicious and healthy vegetarian meal option.",
-      price: 9,
-      image: "/images/kitchen/boxes/four.jpg",
-      category: "vegetarian",
-    },
-    {
-      id: 5,
-      name: "Non-Vegetarian Delight",
-      description: "Enjoy our flavorful non-vegetarian dishes in a tiffin.",
-      price: 11,
-      image: "/images/kitchen/boxes/five.jpg",
-      category: "nonveg",
-    },
-    {
-      id: 6,
-      name: "Weekend Special Tiffin",
-      description: "Treat yourself with our special weekend menu.",
-      price: 15,
-      image: "/images/kitchen/boxes/six.jpg",
-      category: "weekend",
-    },
-    {
-      id: 7,
-      name: "Subscription - Monthly",
-      description: "Get delicious tiffins delivered every day for a month.",
-      price: 200,
-      image: "/images/kitchen/boxes/seven.jpg",
-      category: "subscription",
-    },
-    {
-      id: 8,
-      name: "Subscription - Weekly",
-      description: "Delicious tiffins delivered every day for a month.",
-      price: 50,
-      image: "/images/kitchen/boxes/eight.jpg",
-      category: "subscription",
-    },
-    {
-      id: 9,
-      name: "Burger",
-      description: "Delicious burger with cheese.",
-      price: 7,
-      image: "/images/kitchen/boxes/first.jpg",
-      category: "burger",
-    },
-    {
-      id: 10,
-      name: "Pizza",
-      description: "Delicious Pizza with cheese.",
-      price: 7,
-      image: "/images/kitchen/boxes/first.jpg",
-      category: "pizza",
-    },
-     {
-      id: 11,
-      name: "Pasta",
-      description: "Delicious Pasta with cheese.",
-      price: 7,
-      image: "/images/kitchen/boxes/first.jpg",
-      category: "pasta",
-    },
-    {
-      id: 12,
-      name: "Fries",
-      description: "Delicious Fries with cheese.",
-      price: 7,
-      image: "/images/kitchen/boxes/first.jpg",
-      category: "fries",
-    },
-  ];
 
   const filteredMenuItems =
-    filter === "*"
-      ? menuItems
-      : menuItems.filter((item) => item.category === filter);
+    filter === "All"
+      ? [...menuItems]
+      : menuItems.filter((item) => {
+          if (filter === "Popular") {
+            return item.kitchenRating >= 4.5;
+          } else if (filter === "Chefs") {
+            //To DO
+            return true;
+          } else if (filter === "Regular") {
+            return item.isLocalSeller === true;
+          } else if (filter === "Veg") {
+            return item.category === "vegetarian";
+          } else if (filter === "Non-Veg") {
+            return item.category === "nonveg";
+          } else if (filter === "Regional") {
+            return item.category === "regional";
+          }
+          return true;
+        });
 
-  const visibleMenuItems = filteredMenuItems.slice(0, visibleItems);
+  const topDishes = [...filteredMenuItems]
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 3);
 
-  // Modal Styles (You can customize these further)
-  const modalStyles = {
-    content: {
-      top: '50%',
-      left: '50%',
-      right: 'auto',
-      bottom: 'auto',
-      marginRight: '-50%',
-      transform: 'translate(-50%, -50%)',
-      width: '60%',
-      maxWidth: '500px',
-      padding: '20px',
-      borderRadius: '8px',
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    },
-    overlay: {
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
-      zIndex: 1000,
-    },
-  };
+  const topChefs = [
+    ...new Set(filteredMenuItems.map((item) => item.kitchenName)),
+  ].map((kitchenName) =>
+    filteredMenuItems.find((item) => item.kitchenName === kitchenName)
+  );
+
+  const vegetarian = filteredMenuItems.filter(
+    (item) => item.category === "vegetarian"
+  );
+  const nonveg = filteredMenuItems.filter((item) => item.category === "nonveg");
+  const regional = filteredMenuItems.filter(
+    (item) => item.category === "regional"
+  );
+
+  if (loading === "loading") {
+    return <div>Loading menu items...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
 
   return (
     <section className="food_section layout_padding">
@@ -199,120 +150,89 @@ const Menu = () => {
           <h2>Our Menu</h2>
         </div>
 
-        <ul className="filters_menu">
-          <li
-            className={activeFilter === "*" ? "active" : ""}
-            onClick={() => handleFilterClick("*")}
-          >
-            All
-          </li>
-          <li
-            className={activeFilter === "burger" ? "active" : ""}
-            onClick={() => handleFilterClick("burger")}
-          >
-            Burger
-          </li>
-          <li
-            className={activeFilter === "pizza" ? "active" : ""}
-            onClick={() => handleFilterClick("pizza")}
-          >
-            Pizza
-          </li>
-          <li
-            className={activeFilter === "pasta" ? "active" : ""}
-            onClick={() => handleFilterClick("pasta")}
-          >
-            Pasta
-          </li>
-          <li
-            className={activeFilter === "fries" ? "active" : ""}
-            onClick={() => handleFilterClick("fries")}
-          >
-            Fries
-          </li>
-        </ul>
+        {/* Filter Menu */}
+        <FilterMenu filter={filter} handleFilterClick={handleFilterClick} />
 
-        <div className="filters-content">
-          <div className="row grid" ref={gridRef}>
-            {visibleMenuItems.map((item) => (
-              <div
-                key={item.id}
-                className={`col-sm-6 col-lg-4 all ${item.category}`}
-                style={{ cursor: "pointer" }}
-                onClick={() => handleItemClick(item)}
-              >
-                <div className="box">
-                  <div>
-                    <div className="img-box">
-                      <img src={item.image} alt={item.name} />
-                    </div>
-                    <div className="detail-box">
-                      <h5>{item.name}</h5>
-                      <p>{item.description}</p>
-                      <div className="options">
-                        <h6>${item.price}</h6>
-                      </div>
-                      <button
-                        className="add-to-cart-btn"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleItemClick(item);
-                        }}
-                      >
-                        Add to Cart
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
+        {/* Top Dishes Section */}
+        {topDishes.length > 0 && (
+          <div className="menu-category">
+            <h3 className="mt-5">Top Dishes</h3>
+            <div className="row" ref={gridRef}>
+              {topDishes.map((item) => (
+                <MenuItem
+                  key={item.id}
+                  item={item}
+                  handleItemClick={handleItemClick}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-        {filteredMenuItems.length > visibleItems && (
-          <div className="btn-box">
-            <button onClick={handleViewMore}>View More</button>
+        )}
+
+        {/* Top Chefs Section */}
+        {filter !== "Chefs" && topChefs.length > 0 && (
+          <div className="menu-category">
+            <h3 className="mt-5">Top Chefs</h3>
+            <div className="row" ref={gridRef}>
+              {topChefs.map((item) => (
+                <MenuItem
+                  key={item.id}
+                  item={item}
+                  handleItemClick={handleItemClick}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Vegetarian Section */}
+        {filter !== "Veg" && vegetarian.length > 0 && (
+          <div className="menu-category">
+            <h3 className="mt-5">Vegetarian</h3>
+            <div className="row" ref={gridRef}>
+              {vegetarian.map((item) => (
+                <MenuItem
+                  key={item.id}
+                  item={item}
+                  handleItemClick={handleItemClick}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Non-Veg Section */}
+        {filter !== "Non-Veg" && nonveg.length > 0 && (
+          <div className="menu-category">
+            <h3 className="mt-5">Non-Veg</h3>
+            <div className="row" ref={gridRef}>
+              {nonveg.map((item) => (
+                <MenuItem
+                  key={item.id}
+                  item={item}
+                  handleItemClick={handleItemClick}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* Regional Section */}
+        {filter !== "Regional" && regional.length > 0 && (
+          <div className="menu-category">
+            <h3 className="mt-5">Regional</h3>
+            <div className="row" ref={gridRef}>
+              {regional.map((item) => (
+                <MenuItem
+                  key={item.id}
+                  item={item}
+                  handleItemClick={handleItemClick}
+                />
+              ))}
+            </div>
           </div>
         )}
       </div>
-
-      <Modal
-        isOpen={modalIsOpen}
-        onRequestClose={closeModal}
-        style={modalStyles}
-        contentLabel="Item Details"
-      >
-        {selectedItem && (
-          <div className="modal-content">
-            <h2>{selectedItem.name}</h2>
-            <img
-              src={selectedItem.image}
-              alt={selectedItem.name}
-              style={{ maxWidth: "100%", height: "auto" }}
-            />
-            <p>{selectedItem.description}</p>
-            <p>Price: ${selectedItem.price}</p>
-
-            <div className="quantity-controls">
-              <button onClick={decreaseQuantity} className="quantity-button">
-                -
-              </button>
-              <span className="quantity-value">{itemQuantity}</span>
-              <button onClick={increaseQuantity} className="quantity-button">
-                +
-              </button>
-            </div>
-
-            <div className="modal-actions">
-              <button onClick={handleAddToCartFromModal} className="add-to-cart-btn">
-                Add to Cart
-              </button>
-              <button onClick={closeModal} className="cancel-button">
-                Cancel
-              </button>
-            </div>
-          </div>
-        )}
-      </Modal>
     </section>
   );
 };
