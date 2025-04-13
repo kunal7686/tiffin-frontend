@@ -1,0 +1,224 @@
+/* cart.css */
+
+/* Enhanced UI and Color Theme: #202831 */
+
+/* General Styling */
+.cart-section {
+  margin-top: 50px;
+  margin-bottom: 50px;
+  color: #fff; /*Set base color to white*/
+}
+
+.cart-section .container {
+  max-width: 1200px;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+/* Base table styles */
+.cart-table-wrap {
+  overflow-x: auto; /* Enable horizontal scrolling on smaller screens */
+}
+
+table.cart-table {
+  border: none;
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  background-color: #202831;
+}
+
+/* Style for table header */
+thead {
+  background-color: #202831;
+  color: #fff;
+}
+
+tr.table-head-row th {
+  padding: 18px 15px;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+}
+
+/* Style for table body */
+.cart-table-wrap tbody tr td {
+  text-align: center;
+  padding: 20px 0;
+  color: #fff;  /* Make sure text is visible */
+  border-bottom: 1px solid #444; /* Darker border for visibility */
+}
+
+.cart-table-wrap tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Product image */
+td.product-image img {
+  max-width: 60px;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  margin-bottom: 0;
+}
+
+/* Product name */
+td.product-name {
+  font-weight: 500;
+  color: #fff;  /* Ensure white text */
+}
+
+/* Product price */
+td.product-price {
+  color: #ddd;  /* Lighter color for price */
+}
+
+/* Quantity selector styles */
+.cart-section .quantity-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-section .quantity-btn {
+  background-color: #34495e;
+  color: #fff;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 14px;
+  line-height: 1;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cart-section .quantity-btn:hover {
+  background-color: #555;  /* Darker on hover */
+}
+
+.cart-section .quantity-value {
+  margin: 0 10px;
+  font-size: 16px;
+  color: #fff; /*Quantity value text white */
+  font-weight: 500;
+}
+
+/* Remove item button */
+td.product-remove .remove-item-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #777;
+  transition: color 0.2s ease-in-out;
+  padding: 5px;
+  border-radius: 4px;
+}
+
+td.product-remove .remove-item-btn:hover {
+  color: #e74c3c;
+}
+
+/* Total section styles */
+.total-section {
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  color: #333;
+}
+
+/* Total Table */
+.total-section table.total-table {
+  border: none;
+  width: 100%; /* Ensure full width */
+}
+
+/* Total Table Head */
+.total-table-head tr th {
+  background-color: #f2f2f2;
+  padding: 12px;
+  text-align: left;
+  font-weight: bold;
+  color: #333;
+  border: none;
+}
+
+/* Total Table Data */
+.total-data {
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+.total-data td {
+  padding: 10px;
+  text-align: left;
+  color: #333;  /*Ensure colors are readable */
+}
+
+/* Remove last border bottom */
+.total-data:last-child {
+  border-bottom: none;
+}
+
+/* Total Data Strong */
+.total-data strong {
+  color: #333;
+  font-weight: bold;
+}
+
+/* Button Styles */
+.cart-buttons {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.boxed-btn {
+  display: inline-block;
+  padding: 12px 25px;
+  font-weight: 600;
+  border-radius: 6px;
+  transition: all 0.3s ease-in-out;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+
+.checkout-btn {
+  background-color: #202831; /* Match update cart button color */
+  color: #fff;
+}
+
+.checkout-btn:hover {
+  background-color: #34495e;
+  color: #fff;
+}
+
+/* Icons */
+td.product-remove .remove-item-btn i {
+    color: #fff; /* Adjust the color of the icon here */
+}
+
+/* Responsive Styles */
+@media only screen and (max-width: 767px) {
+  .cart-table-wrap {
+    overflow-x: auto;
+  }
+
+  table.cart-table {
+    width: 600px;
+  }
+
+  .cart-buttons {
+    text-align: center;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .cart-buttons {
+    text-align: center;
+  }
+}

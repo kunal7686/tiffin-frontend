@@ -1,0 +1,34 @@
+[
+    {
+      "id": 1,
+      "name": "Classic Tiffin",
+      "image": "/images/f1.png",  
+      "qty": "Regular",
+      "foodType": "Vegetarian",
+      "price": 50
+    },
+    {
+      "id": 2,
+      "name": "Executive Tiffin",
+      "image": "/images/f2.png",
+      "qty": "Large",
+      "foodType": "Non-Vegetarian",
+      "price": 80
+    },
+    {
+      "id": 3,
+      "name": "Healthy Tiffin",
+      "image": "/images/f3.png",
+      "qty": "Medium",
+      "foodType": "Vegetarian",
+      "price": 60
+    },
+    {
+      "id": 4,
+      "name": "Special Tiffin",
+      "image": "/images/f4.png",
+      "qty": "Regular",
+      "foodType": "Vegetarian",
+      "price": 70
+    }
+  ]
