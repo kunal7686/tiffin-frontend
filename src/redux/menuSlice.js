@@ -7,6 +7,7 @@ const menuSlice = createSlice({
     loading: "idle",
     error: null,
     filter: "All",
+    searchTerm: "",
   },
   reducers: {
     setMenuItems: (state, action) => {
@@ -35,6 +36,9 @@ const menuSlice = createSlice({
       const itemId = action.payload;
       state.items = state.items.filter((item) => item.id !== itemId);
     },
+    setSearchTerm: (state, action) => {
+      state.searchTerm = action.payload;
+    },
   },
 });
 
@@ -46,11 +50,12 @@ export const {
   addMenuItem,
   updateMenuItem,
   deleteMenuItem,
+  setSearchTerm,
 } = menuSlice.actions;
 
 export const selectAllMenuItems = (state) => state.menu.items;
 export const selectMenuLoadingStatus = (state) => state.menu.loading;
 export const selectMenuError = (state) => state.menu.error;
 export const selectMenuFilter = (state) => state.menu.filter;
-
+export const selectSearchTerm = (state) => state.menu.searchTerm;
 export default menuSlice.reducer;

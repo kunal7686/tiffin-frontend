@@ -93,10 +93,9 @@ const Menu = () => {
       ? [...menuItems]
       : menuItems.filter((item) => {
           if (filter === "Popular") {
-            return item.kitchenRating >= 4.5;
+            return item.rating >= 4.5;
           } else if (filter === "Chefs") {
-            //To DO
-            return true;
+            return item.kitchenRating >= 4.5;
           } else if (filter === "Regular") {
             return item.isLocalSeller === true;
           } else if (filter === "Veg") {
@@ -119,13 +118,32 @@ const Menu = () => {
     filteredMenuItems.find((item) => item.kitchenName === kitchenName)
   );
 
-  const vegetarian = filteredMenuItems.filter(
-    (item) => item.category === "vegetarian"
-  );
-  const nonveg = filteredMenuItems.filter((item) => item.category === "nonveg");
-  const regional = filteredMenuItems.filter(
-    (item) => item.category === "regional"
-  );
+  const vegetarian =
+    filter === "All"
+      ? filteredMenuItems.filter((item) => item.category === "vegetarian")
+      : filter === "Veg"
+      ? filteredMenuItems
+      : [];
+
+  const nonveg =
+    filter === "All"
+      ? filteredMenuItems.filter((item) => item.category === "nonveg")
+      : filter === "Non-Veg"
+      ? filteredMenuItems
+      : [];
+
+  const regional =
+    filter === "All"
+      ? filteredMenuItems.filter((item) => item.category === "regional")
+      : filter === "Regional"
+      ? filteredMenuItems
+      : [];
+
+  const regular = filter === "Regular" ? filteredMenuItems : [];
+
+  const popular = filter === "Popular" ? filteredMenuItems : [];
+
+  const chefs = filter === "Chefs" ? filteredMenuItems : [];
 
   if (loading === "loading") {
     return <div>Loading menu items...</div>;
@@ -154,7 +172,7 @@ const Menu = () => {
         <FilterMenu filter={filter} handleFilterClick={handleFilterClick} />
 
         {/* Top Dishes Section */}
-        {topDishes.length > 0 && (
+        {(topDishes.length > 0 && filter == "All") || filter === "Popular" ? (
           <div className="menu-category">
             <h3 className="mt-5">Top Dishes</h3>
             <div className="row" ref={gridRef}>
@@ -167,10 +185,10 @@ const Menu = () => {
               ))}
             </div>
           </div>
-        )}
+        ) : null}
 
         {/* Top Chefs Section */}
-        {filter !== "Chefs" && topChefs.length > 0 && (
+        {(topChefs.length > 0 && filter == "All") || filter === "Chefs" ? (
           <div className="menu-category">
             <h3 className="mt-5">Top Chefs</h3>
             <div className="row" ref={gridRef}>
@@ -183,10 +201,22 @@ const Menu = () => {
               ))}
             </div>
           </div>
-        )}
-
-        {/* Vegetarian Section */}
-        {filter !== "Veg" && vegetarian.length > 0 && (
+        ) : null}
+        {filter === "Regular" ? (
+          <div className="menu-category">
+            <h3 className="mt-5">Regular</h3>
+            <div className="row" ref={gridRef}>
+              {regular.map((item) => (
+                <MenuItem
+                  key={item.id}
+                  item={item}
+                  handleItemClick={handleItemClick}
+                />
+              ))}
+            </div>
+          </div>
+        ) : null}
+        {filter === "Veg" || filter === "All" ? (
           <div className="menu-category">
             <h3 className="mt-5">Vegetarian</h3>
             <div className="row" ref={gridRef}>
@@ -199,10 +229,10 @@ const Menu = () => {
               ))}
             </div>
           </div>
-        )}
+        ) : null}
 
         {/* Non-Veg Section */}
-        {filter !== "Non-Veg" && nonveg.length > 0 && (
+        {filter === "Non-Veg" || filter === "All" ? (
           <div className="menu-category">
             <h3 className="mt-5">Non-Veg</h3>
             <div className="row" ref={gridRef}>
@@ -215,10 +245,10 @@ const Menu = () => {
               ))}
             </div>
           </div>
-        )}
+        ) : null}
 
         {/* Regional Section */}
-        {filter !== "Regional" && regional.length > 0 && (
+        {filter === "Regional" || filter === "All" ? (
           <div className="menu-category">
             <h3 className="mt-5">Regional</h3>
             <div className="row" ref={gridRef}>
@@ -231,7 +261,7 @@ const Menu = () => {
               ))}
             </div>
           </div>
-        )}
+        ) : null}
       </div>
     </section>
   );

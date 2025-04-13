@@ -1,6 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import { setSearchTerm } from "../../../redux/menuSlice";
 
 function Navbar() {
+  const [searchTermLocal, setSearchTermLocal] = useState("");
+  const dispatch = useDispatch();
+
+  const handleSearchChange = (e) => {
+    const value = e.target.value;
+    setSearchTermLocal(value);
+    dispatch(setSearchTerm(value));
+  };
+
   return (
     <nav className="navbar p-0 fixed-top d-flex flex-row">
       <div className="navbar-brand-wrapper d-flex d-lg-none align-items-center justify-content-center">
@@ -16,6 +27,8 @@ function Navbar() {
                 type="text"
                 className="form-control"
                 placeholder="Search dishes"
+                value={searchTermLocal}
+                onChange={handleSearchChange}
               />
             </form>
           </li>

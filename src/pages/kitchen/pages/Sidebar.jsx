@@ -1,9 +1,12 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
+import { Link, useLocation } from "react-router-dom";
 
 function Sidebar() {
-  const [uiBasicOpen, setUiBasicOpen] = useState(false);
-  const [userPagesOpen, setUserPagesOpen] = useState(false);
+  const location = useLocation();
+
+  const isActive = (path) => {
+    return location.pathname === path;
+  };
 
   return (
     <nav className="sidebar sidebar-offcanvas" id="sidebar">
@@ -18,18 +21,18 @@ function Sidebar() {
         </Link>
       </div>
       <ul className="nav">
-        <li className="nav-item menu-items">
-          <Link className="nav-link" to="/all-dishes">
+        <li
+          className={`nav-item menu-items ${
+            isActive("/kitchen/dashboard") ? "active" : ""
+          }`}
+        >
+          <Link className="nav-link" to="/kitchen/dashboard">
             <span className="menu-icon">
               <i className="fa fa-cutlery" aria-hidden="true"></i>
             </span>
             <span className="menu-title">All Dishes</span>
           </Link>
         </li>
-
-        {/*<li className="nav-item menu-items">*/}
-
-        {/*</li>*/}
       </ul>
     </nav>
   );

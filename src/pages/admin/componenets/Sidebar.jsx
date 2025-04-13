@@ -5,7 +5,7 @@ function Sidebar() {
   const location = useLocation();
 
   const isActive = (path) => {
-    return location.pathname === path;
+    return location.pathname.startsWith(path);
   };
 
   return (
@@ -14,12 +14,10 @@ function Sidebar() {
         <Link className="sidebar-brand brand-logo" to="/">
           <span className="sidebar-logo-text" style={{ color: "whitesmoke" }}>
             TiffinBox
-          </span>{" "}
-          {/* Dummy Logo Text */}
+          </span>
         </Link>
         <Link className="sidebar-brand brand-logo-mini" to="/">
-          <span className="sidebar-logo-text-mini">TB</span>{" "}
-          {/* Dummy Logo Text Mini */}
+          <span className="sidebar-logo-text-mini">TB</span>
         </Link>
       </div>
       <ul className="nav">
@@ -38,10 +36,10 @@ function Sidebar() {
 
         <li
           className={`nav-item menu-items ${
-            isActive("/admin/dashboard/manage-dishes") ? "active" : ""
+            isActive("/admin/manage-dishes") ? "active" : ""
           }`}
         >
-          <Link className="nav-link" to="/admin/dashboard/manage-dishes">
+          <Link className="nav-link" to="/admin/manage-dishes">
             <span className="menu-icon">
               <i className="fa fa-cutlery" aria-hidden="true"></i>
             </span>
@@ -51,10 +49,10 @@ function Sidebar() {
 
         <li
           className={`nav-item menu-items ${
-            isActive("/admin/dashboard/manage-orders") ? "active" : ""
+            isActive("/admin/manage-orders") ? "active" : ""
           }`}
         >
-          <Link className="nav-link" to="/admin/dashboard/manage-orders">
+          <Link className="nav-link" to="/admin/manage-orders">
             <span className="menu-icon">
               <i className="fa fa-shopping-cart" aria-hidden="true"></i>
             </span>
@@ -64,10 +62,10 @@ function Sidebar() {
 
         <li
           className={`nav-item menu-items ${
-            isActive("/admin/dashboard/manage-users") ? "active" : ""
+            isActive("/admin/manage-users") ? "active" : ""
           }`}
         >
-          <Link className="nav-link" to="/admin/dashboard/manage-users">
+          <Link className="nav-link" to="/admin/manage-users">
             <span className="menu-icon">
               <i className="fa fa-users" aria-hidden="true"></i>
             </span>
@@ -77,27 +75,16 @@ function Sidebar() {
 
         <li
           className={`nav-item menu-items ${
-            isActive("/admin/dashboard/manage-chefs") ? "active" : ""
+            isActive("/admin/manage-chefs") ? "active" : ""
           }`}
         >
-          <Link className="nav-link" to="/admin/dashboard/manage-chefs">
+          <Link className="nav-link" to="/admin/manage-chefs">
             <span className="menu-icon">
               <i className="fa fa-user-md" aria-hidden="true"></i>
             </span>
             <span className="menu-title">Manage Chefs</span>
           </Link>
         </li>
-
-        {/*
-        <li className="nav-item menu-items">
-          <Link className="nav-link" to="/settings">
-            <span className="menu-icon">
-              <i className="fa fa-cog" aria-hidden="true"></i>
-            </span>
-            <span className="menu-title">Settings</span>
-          </Link>
-        </li>
-        */}
       </ul>
     </nav>
   );
